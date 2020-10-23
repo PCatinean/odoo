@@ -12,6 +12,7 @@ from weakref import WeakValueDictionary
 import logging
 import os
 import threading
+import traceback
 
 import odoo
 from .. import SUPERUSER_ID
@@ -395,6 +396,7 @@ class Registry(Mapping):
             # Check if the model caches must be invalidated.
             elif self.cache_sequence != c:
                 _logger.info("Invalidating all model caches after database signaling.")
+                _logger.warning(traceback.print_stack())
                 # Bypass self.clear_caches() to avoid invalidation loops in multi-threaded
                 # configs due to the `cache_invalidated` flag being set, causing more signaling.
                 self.cache.clear()
